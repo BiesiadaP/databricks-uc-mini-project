@@ -1,0 +1,25 @@
+-- Databricks notebook source
+resources:
+  jobs:
+    wf_process_f1_data:
+      name: wf_process_f1_data
+      tasks:
+        - task_key: Create_Bronze_Tables
+          notebook_task:
+            notebook_path: /Workspace/uc-mini-project/3.create_bronze_tables
+            source: WORKSPACE
+        - task_key: Create_Silver_Tables
+          depends_on:
+            - task_key: Create_Bronze_Tables
+          notebook_task:
+            notebook_path: /Workspace/uc-mini-project/4.create_silver_tables
+            source: WORKSPACE
+        - task_key: Create_Gold_Tables
+          depends_on:
+            - task_key: Create_Silver_Tables
+          notebook_task:
+            notebook_path: /Workspace/uc-mini-project/5.create_gold_tables
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
